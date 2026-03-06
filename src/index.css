@@ -197,6 +197,7 @@ select {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  overflow: visible;
 }
 
 .header-actions {
@@ -230,7 +231,7 @@ select {
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  position: relative;
+  position: relative;   /* important */
   cursor: pointer;
   user-select: none;
 }
@@ -251,16 +252,16 @@ select {
 
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 8px);
-  left: -12px;
-  right: -12px;
+  top: calc(100% + 6px);
+  right: 0;              /* aligns with button */
+  left: auto;
   background: white;
   border: 1px solid var(--border-strong);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  z-index: 9999;
+  min-width: 160px;
   overflow: hidden;
-  min-width: 120px;
 }
 
 .dropdown-item {
@@ -303,7 +304,7 @@ select {
   padding: 0.5rem 1rem;
   border-radius: 8px;
   background: white;
-  width: 400px;
+  width: 300px;
   transition: all 0.2s ease;
 }
 
@@ -645,4 +646,75 @@ select {
   background: var(--primary);
   color: white;
   border: none;
+}
+
+
+/* Override Bootstrap dropdown styles with higher specificity */
+.library-page .sort-container {
+  position: relative !important;
+}
+
+.library-page .sort-container .dropdown-menu {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  background: white !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  z-index: 9999 !important;
+  overflow: hidden !important;
+  min-width: 140px !important;
+  max-width: 200px !important;
+  display: block !important;
+  padding: 4px 0 !important;
+  margin: 8px 0 0 0 !important;
+  transform: translate(0, 0) !important;
+  transform-origin: top left !important;
+  will-change: auto !important;
+  float: none !important;
+  inset: auto auto auto 0 !important;
+}
+
+/* Ensure dropdown appears below by resetting all Bootstrap positioning */
+.library-page .sort-container .dropdown-menu[style] {
+  top: 100% !important;
+  left: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+}
+
+.library-page .sort-container .dropdown-item {
+  padding: 8px 12px !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s ease !important;
+  font-size: 0.85rem !important;
+  color: #475569 !important;
+  display: block !important;
+  width: 100% !important;
+  text-align: left !important;
+  border: none !important;
+  background: transparent !important;
+  margin: 0 !important;
+  line-height: 1.5 !important;
+  font-weight: 400 !important;
+}
+
+.library-page .sort-container .dropdown-item:hover {
+  background-color: #f1f5f9 !important;
+  color: #1e293b !important;
+}
+
+.library-page .sort-container .dropdown-item.active {
+  background-color: #e2e8f0 !important;
+  color: #1e293b !important;
+  font-weight: 500 !important;
+}
+
+.library-page .sort-container .dropdown-item.active:hover {
+  background-color: #cbd5e1 !important;
+  color: #0f172a !important;
 }

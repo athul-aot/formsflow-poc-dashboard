@@ -7,11 +7,37 @@ import * as Icons from 'lucide-react';
 const Library = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [activeCategory, setActiveCategory] = useState('All Forms');
+    const [sortBy, setSortBy] = useState('Newest');
+    const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const formsPerPage = 8;
     const dropdownRef = useRef(null);
 
     const navigate = useNavigate();
+
+    const sortOptions = [
+        { value: 'Newest', label: 'Newest' },
+        { value: 'Oldest', label: 'Oldest' },
+        { value: 'Name_ASC', label: 'Name (A-Z)' },
+        { value: 'Name_DESC', label: 'Name (Z-A)' }
+    ];
+
+    // Reset to page 1 when filters or sort change
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm, activeCategory, sortBy]);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setSortDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
 
 
@@ -20,13 +46,25 @@ const Library = () => {
     const filteredForms = useMemo(() => {
         return forms
             .filter(form => {
-                const matchesSearch = form.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    form.description.toLowerCase().includes(searchTerm.toLowerCase());
+                const title = form.title.toLowerCase();
+                const desc = form.description.toLowerCase();
+                const search = searchTerm.toLowerCase();
+                const matchesSearch = title.includes(search) || desc.includes(search);
                 const matchesCategory = activeCategory === 'All Forms' || form.category === activeCategory;
                 return matchesSearch && matchesCategory;
             })
-            .sort((a, b) => b.id - a.id);
-    }, [searchTerm, activeCategory]);
+            .sort((a, b) => {
+                if (sortBy === 'Name_ASC') return a.title.localeCompare(b.title);
+                if (sortBy === 'Name_DESC') return b.title.localeCompare(a.title);
+
+                const dateA = new Date(a.updatedAt || 0);
+                const dateB = new Date(b.updatedAt || 0);
+
+                if (sortBy === 'Oldest') return dateA - dateB;
+                // Default to Newest
+                return dateB - dateA;
+            });
+    }, [searchTerm, activeCategory, sortBy]);
 
     const indexOfLastForm = currentPage * formsPerPage;
     const indexOfFirstForm = indexOfLastForm - formsPerPage;
@@ -67,6 +105,36 @@ const Library = () => {
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
+                            </div>
+                            <div
+                                className="sort-container"
+                                ref={dropdownRef}
+                                onClick={() => setSortDropdownOpen(!sortDropdownOpen)}
+                            >
+                                <Icons.ArrowUpDown size={14} />
+                                <span className="sort-label">Sort:</span>
+                                <span className="sort-value">
+                                    {sortOptions.find(o => o.value === sortBy)?.label || 'Newest'}
+                                </span>
+                                <Icons.ChevronDown size={14} className={`dropdown-arrow ${sortDropdownOpen ? 'open' : ''}`} />
+
+                                {sortDropdownOpen && (
+                                    <div className="dropdown-menu">
+                                        {sortOptions.map(option => (
+                                            <div
+                                                key={option.value}
+                                                className={`dropdown-item ${sortBy === option.value ? 'active' : ''}`}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSortBy(option.value);
+                                                    setSortDropdownOpen(false);
+                                                }}
+                                            >
+                                                {option.label}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
