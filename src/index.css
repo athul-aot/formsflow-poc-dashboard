@@ -64,9 +64,8 @@ select {
   position: sticky;
   top: 0;
   z-index: 100;
-  height: 80px;
+  height: 75px;
   background: var(--surface);
-  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
 }
@@ -132,9 +131,9 @@ select {
 }
 
 .contact-btn:hover {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
+  background: #f3f4f6;
+  color: #111827;
+  border-color: #e5e7eb;
 }
 
 /* Library Page */
@@ -144,7 +143,7 @@ select {
 }
 
 .library-header {
-  padding: 2.5rem 0 1.5rem;
+  padding: 1.6rem 0 1.5rem;
   background: white;
 }
 
@@ -304,7 +303,7 @@ select {
   padding: 0.5rem 1rem;
   border-radius: 8px;
   background: white;
-  width: 280px;
+  width: 400px;
   transition: all 0.2s ease;
 }
 
@@ -352,14 +351,15 @@ select {
 }
 
 .cat-btn:hover {
-  color: var(--text-main);
+  color: #111827;
   background: #f3f4f6;
 }
 
 .cat-btn.active {
-  background: #111827;
-  color: white;
+  background: #f3f4f6;
+  color: #111827;
   font-weight: 600;
+  border: 1px solid #e5e7eb;
 }
 
 /* Forms Grid & Cards */
@@ -519,15 +519,20 @@ select {
 .back-btn {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  font-weight: 600;
-  font-size: 0.9rem;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   color: var(--text-muted);
-  padding: 0.5rem 0;
+  transition: var(--transition);
+  background: #f8fafc;
+  border: 1px solid var(--border);
 }
 
 .back-btn:hover {
   color: var(--primary);
+  background: #f1f5f9;
+  transform: translateX(-2px);
 }
 
 .header-title {
@@ -547,8 +552,9 @@ select {
 }
 
 .open-external-btn {
-  background: var(--primary);
-  color: white;
+  background: #f3f4f6;
+  color: #111827;
+  border: 1px solid #e5e7eb;
   padding: 0.5rem 1.2rem;
   border-radius: 8px;
   font-weight: 600;
@@ -561,8 +567,11 @@ select {
 }
 
 .open-external-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(82, 71, 247, 0.25);
+  background: #e5e7eb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  text-decoration: none;
+  color: #111827;
 }
 
 .status-indicator {

@@ -13,8 +13,8 @@ const FormViewer = () => {
 
     const configFile = {
         authenticationType: 'anonymous',
-        formioUrl: 'http://localhost:3001',
-        webApiUrl: 'http://localhost:5000'
+        formioUrl: import.meta.env.VITE_FORMIO_URL || 'http://localhost:3001',
+        webApiUrl: import.meta.env.VITE_WEB_API_URL || 'http://localhost:5000'
     };
 
     useEffect(() => {
@@ -24,7 +24,7 @@ const FormViewer = () => {
         const originalError = console.error;
         console.error = (...args) => {
             const message = String(args[0]);
-            if (message.includes('n2 is not a function') || 
+            if (message.includes('n2 is not a function') ||
                 message.includes('Cannot delete property') ||
                 message.includes('Should not already be working')) {
                 return; // Suppress these errors
@@ -34,7 +34,7 @@ const FormViewer = () => {
 
         // Create web component outside React's control
         const webComponent = document.createElement('formsflow-wc');
-        
+
         // Set attributes
         webComponent.setAttribute('configFile', JSON.stringify(configFile));
         webComponent.setAttribute('anonymousUrl', form.embedUrl);
@@ -87,9 +87,8 @@ const FormViewer = () => {
             <div className="viewer-header">
                 <div className="container header-flex">
                     <div className="header-left">
-                        <button className="back-btn" onClick={() => navigate('/')}>
-                            <ChevronLeft size={18} />
-                            Back
+                        <button className="back-btn" onClick={() => navigate('/')} title="Back">
+                            <ChevronLeft size={24} strokeWidth={2.5} />
                         </button>
                         <div className="header-title">
                             <h2>{form.title}</h2>
@@ -124,8 +123,8 @@ const FormViewer = () => {
             {/* ── Embedded Form ── */}
             <div className="container embed-container">
                 <div className="form-portal-wrapper">
-                    <div 
-                        ref={containerRef} 
+                    <div
+                        ref={containerRef}
                         style={{ width: '100%', minHeight: '500px' }}
                         key={form.id}
                     >

@@ -7,30 +7,15 @@ import * as Icons from 'lucide-react';
 const Library = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [activeCategory, setActiveCategory] = useState('All Forms');
-    const [sortBy, setSortBy] = useState('Newest');
     const [currentPage, setCurrentPage] = useState(1);
-    const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
     const formsPerPage = 8;
     const dropdownRef = useRef(null);
 
     const navigate = useNavigate();
 
-    const sortOptions = [
-        { value: 'Newest', label: 'Newest' },
-        { value: 'Name', label: 'Name' }
-    ];
 
-    // Close dropdown when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setSortDropdownOpen(false);
-            }
-        };
 
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+
 
     const filteredForms = useMemo(() => {
         return forms
@@ -40,11 +25,8 @@ const Library = () => {
                 const matchesCategory = activeCategory === 'All Forms' || form.category === activeCategory;
                 return matchesSearch && matchesCategory;
             })
-            .sort((a, b) => {
-                if (sortBy === 'Name') return a.title.localeCompare(b.title);
-                return b.id - a.id;
-            });
-    }, [searchTerm, activeCategory, sortBy]);
+            .sort((a, b) => b.id - a.id);
+    }, [searchTerm, activeCategory]);
 
     const indexOfLastForm = currentPage * formsPerPage;
     const indexOfFirstForm = indexOfLastForm - formsPerPage;
@@ -67,7 +49,6 @@ const Library = () => {
                     {/* Breadcrumb row */}
                     <div className="breadcrumbs">
                         <span className="status-badge">Public Directory</span>
-                        <span className="update-time">• Updated today</span>
                     </div>
 
                     {/* Title + Sort row */}
@@ -86,38 +67,6 @@ const Library = () => {
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
-                            </div>
-                            <div className="sort-container" ref={dropdownRef}>
-                                <div 
-                                    className="custom-dropdown"
-                                    onClick={() => {
-                                        console.log('Dropdown clicked, current state:', sortDropdownOpen);
-                                        setSortDropdownOpen(!sortDropdownOpen);
-                                    }}
-                                >
-                                    <ArrowUpDown size={14} />
-                                    <span>Sort</span>
-                                    <span className="sort-value">{sortBy}</span>
-                                    <ChevronDown size={14} className={`dropdown-arrow ${sortDropdownOpen ? 'open' : ''}`} />
-                                    
-                                    {sortDropdownOpen && (
-                                        <div className="dropdown-menu">
-                                            {sortOptions.map(option => (
-                                                <div
-                                                    key={option.value}
-                                                    className={`dropdown-item ${sortBy === option.value ? 'active' : ''}`}
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setSortBy(option.value);
-                                                        setSortDropdownOpen(false);
-                                                    }}
-                                                >
-                                                    {option.label}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
                             </div>
                         </div>
                     </div>
