@@ -46,6 +46,18 @@ export const forms = [
         publicUrl: `${import.meta.env.VITE_PUBLIC_URL_BASE}/ffpocmobile-employeeonboardingform`,
         embedUrl: `${import.meta.env.VITE_EMBED_URL_BASE}/ffpocmobile-employeeonboardingform`,
         updatedAt: "2024-03-05T14:45:00Z"
+    },
+    {
+        id: 5,
+        title: "Test Form",
+        category: "Healthcare",
+        description: "Submit personal details, medical history, and insurance information to register as a new patient.",
+        status: "Active",
+        icon: "UserPlus",
+        color: "#3b82f6", // Blue
+        publicUrl: `https://trial.formsflow.cloud/public/form/kares-ontariotrilliumdrugprogramapplication`,
+        embedUrl: `https://trial.formsflow.cloud/formio/kares-ontariotrilliumdrugprogramapplication`,
+        updatedAt: "2024-03-05T10:00:00Z"
     }
 ];
 
